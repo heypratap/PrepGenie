@@ -9,17 +9,24 @@ async function startServer() {
     try {
         await connectToDB()
 
-        app.listen(PORT, () => {
-            console.log(
-                `PrepGenie server is running on port ${PORT}`
-            )
-        })
+        app.listen(
+            PORT,
+            "0.0.0.0",
+            () => {
+                console.log(
+                    `PrepGenie server is running on port ${PORT}`
+                )
+            }
+        )
+
     } catch (error) {
         console.log(
             "Failed to start PrepGenie"
         )
 
-        console.log(error.message)
+        console.log(
+            error.message
+        )
 
         process.exit(1)
     }
