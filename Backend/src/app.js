@@ -8,15 +8,35 @@ const interviewRouter = require("./routes/interview.routes")
 const app = express()
 
 
+const allowedOrigins = [
+    "http://localhost:5173",
+    process.env.FRONTEND_URL
+].filter(Boolean)
+
+
 app.use(
     cors({
-        origin: [
-            "http://localhost:5173",
-            "https://prepgenie-82u2rdk0z-heypratap.vercel.app"
-        ],
+        origin: function (origin, callback) {
+
+            if (!origin) {
+                return callback(null, true)
+            }
+
+            if (allowedOrigins.includes(origin)) {
+                return callback(null, true)
+            }
+
+            return callback(
+                new Error(
+                    `CORS blocked origin: ${origin}`
+                )
+            )
+        },
+
         credentials: true
     })
 )
+
 
 app.use(express.json())
 app.use(cookieParser())
@@ -24,7 +44,7 @@ app.use(cookieParser())
 
 app.get("/", (req, res) => {
     res.json({
-        message: "PrepGenie AI is running"
+        message: "PrepGenie API is running"
     })
 })
 
