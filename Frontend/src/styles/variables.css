@@ -1,0 +1,58 @@
+:root {
+    /* Color System - Modern Clean Palette */
+    --bg: #f5f6fa;
+    --bg-subtle: #f8f9fd;
+    --surface: #ffffff;
+    --surface-soft: #f0f2f8;
+    --surface-muted: #e7eaf2;
+
+    /* Dark contrast surface (for dark accent cards) */
+    --dark-surface: #0c0f17;
+    --dark-surface-soft: #161b26;
+    --dark-surface-border: #222938;
+
+    /* Typography Colors */
+    --text: #0f172a;
+    --text-secondary: #475569;
+    --text-muted: #94a3b8;
+    --text-light: #ffffff;
+    --text-light-muted: #94a3b8;
+
+    /* Borders & Dividers */
+    --border: #e2e8f0;
+    --border-subtle: #edf2f7;
+    --border-focus: #3b82f6;
+
+    /* Brand & Accent Colors */
+    --primary: #09090b;
+    --primary-hover: #18181b;
+    --accent-blue: #3b82f6;
+    --accent-indigo: #6366f1;
+    --accent-purple: #8b5cf6;
+    --accent-cyan: #06b6d4;
+    --accent-pink: #ec4899;
+
+    /* Status & Feedback */
+    --success: #10b981;
+    --success-soft: rgba(16, 185, 129, 0.1);
+    --warning: #f59e0b;
+    --warning-soft: rgba(245, 158, 11, 0.1);
+    --danger: #ef4444;
+    --danger-soft: rgba(239, 68, 68, 0.1);
+
+    /* Geometry & Radii */
+    --radius-full: 9999px;
+    --radius-xl: 28px;
+    --radius-large: 20px;
+    --radius-medium: 14px;
+    --radius-small: 8px;
+
+    /* Shadows & Glows */
+    --shadow-sm: 0 1px 2px 0 rgba(15, 23, 42, 0.05);
+    --shadow-card: 0 10px 30px -10px rgba(15, 23, 42, 0.06), 0 1px 3px rgba(15, 23, 42, 0.04);
+    --shadow-elevated: 0 20px 45px -15px rgba(15, 23, 42, 0.08), 0 0 1px rgba(15, 23, 42, 0.1);
+    --shadow-glow: 0 0 50px rgba(99, 102, 241, 0.12);
+
+    /* Layout Container */
+    --max-width: 1240px;
+}

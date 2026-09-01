@@ -1,0 +1,157 @@
+.navbar {
+    width: 100%;
+    height: 84px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 36px;
+    background: #ffffff;
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.navbar__logo {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    user-select: none;
+}
+
+.navbar__logo .navbar__logo-img {
+    height: 60px;
+    width: auto;
+    max-width: 220px;
+    object-fit: contain;
+    transition: transform 0.2s ease;
+}
+
+.navbar__logo:hover .navbar__logo-img {
+    transform: scale(1.04);
+}
+
+.navbar__links {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--surface-soft);
+    padding: 4px 6px;
+    border-radius: var(--radius-full);
+    border: 1px solid var(--border-subtle);
+}
+
+.navbar__links .nav-link {
+    padding: 7px 16px;
+    border-radius: var(--radius-full);
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    transition: all 0.2s ease;
+}
+
+.navbar__links .nav-link:hover {
+    color: var(--text);
+    background: rgba(255, 255, 255, 0.8);
+}
+
+.navbar__links .nav-link.active {
+    background: #ffffff;
+    color: var(--text);
+    font-weight: 600;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+}
+
+.navbar__actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.navbar__actions .navbar__user-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.navbar__actions .navbar__account {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 16px;
+    background: var(--surface-soft);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-medium);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.navbar__actions .navbar__account svg {
+    color: var(--text-secondary);
+}
+
+.navbar__actions .navbar__account .username {
+    max-width: 110px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.navbar__actions .navbar__account:hover,
+.navbar__actions .navbar__account.active {
+    background: #ffffff;
+    border-color: var(--accent-blue);
+    box-shadow: var(--shadow-sm);
+}
+
+.navbar__actions .navbar__account:hover svg,
+.navbar__actions .navbar__account.active svg {
+    color: var(--accent-blue);
+}
+
+.navbar__actions .logout-btn {
+    padding: 6px 12px;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-muted);
+    border-radius: var(--radius-full);
+    transition: all 0.2s ease;
+}
+
+.navbar__actions .logout-btn:hover {
+    color: var(--danger);
+    background: var(--danger-soft);
+}
+
+.navbar__actions .navbar__login-btn {
+    padding: 8px 20px;
+    background: var(--primary);
+    color: #ffffff;
+    border-radius: var(--radius-full);
+    font-size: 13px;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+
+.navbar__actions .navbar__login-btn:hover {
+    background: var(--primary-hover);
+    transform: translateY(-1px);
+}
+
+@media (max-width: 768px) {
+    .navbar {
+        padding: 0 16px;
+        height: 72px;
+    }
+
+    .navbar__logo .navbar__logo-img {
+        height: 48px;
+    }
+
+    .navbar__links {
+        display: none;
+    }
+}

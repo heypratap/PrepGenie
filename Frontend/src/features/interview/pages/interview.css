@@ -1,0 +1,501 @@
+.interview-page {
+    padding: 24px;
+    min-height: calc(100vh - 80px);
+}
+
+.interview-layout {
+    display: grid;
+    grid-template-columns: 240px 1fr 280px;
+    background: #ffffff;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-card);
+    min-height: 80vh;
+    overflow: hidden;
+}
+
+/* 1. LEFT NAVIGATION SIDEBAR */
+.interview-nav {
+    padding: 24px 20px;
+    background: var(--bg-subtle);
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.interview-nav .back-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    padding: 8px 12px;
+    border-radius: var(--radius-medium);
+    background: #ffffff;
+    border: 1px solid var(--border);
+    transition: all 0.2s ease;
+}
+
+.interview-nav .back-button:hover {
+    color: var(--text);
+    border-color: var(--accent-indigo);
+    transform: translateX(-2px);
+}
+
+.interview-nav .nav-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.interview-nav .nav-group .nav-group-title {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    color: var(--text-muted);
+    padding: 0 8px;
+    margin-bottom: 4px;
+}
+
+.interview-nav .nav-group .nav-item-btn {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    border-radius: var(--radius-medium);
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    transition: all 0.2s ease;
+    text-align: left;
+}
+
+.interview-nav .nav-group .nav-item-btn:hover {
+    background: #ffffff;
+    color: var(--text);
+}
+
+.interview-nav .nav-group .nav-item-btn.active {
+    background: #ffffff;
+    color: var(--accent-indigo);
+    font-weight: 600;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--border-subtle);
+}
+
+.interview-nav .nav-bottom-action {
+    margin-top: auto;
+}
+
+.interview-nav .nav-bottom-action .download-resume-btn {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--primary);
+    color: #ffffff;
+    padding: 12px 16px;
+    border-radius: var(--radius-medium);
+    font-size: 13px;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+
+.interview-nav .nav-bottom-action .download-resume-btn:hover {
+    background: var(--primary-hover);
+    transform: translateY(-1px);
+}
+
+/* 2. MAIN CONTENT AREA */
+.interview-content {
+    padding: 32px 36px;
+    overflow-y: auto;
+    max-height: 85vh;
+}
+
+.content-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    padding-bottom: 24px;
+    margin-bottom: 28px;
+    border-bottom: 1px solid var(--border);
+}
+
+.content-header .pill-tag {
+    margin-bottom: 8px;
+}
+
+.content-header h1 {
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    color: var(--text);
+}
+
+.content-header .count-badge {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    background: var(--surface-soft);
+    padding: 4px 12px;
+    border-radius: var(--radius-full);
+    border: 1px solid var(--border);
+}
+
+.q-list {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.q-card {
+    background: var(--bg-subtle);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-large);
+    overflow: hidden;
+    transition: all 0.2s ease;
+}
+
+.q-card__header {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 18px 22px;
+    text-align: left;
+    cursor: pointer;
+}
+
+.q-card__header .q-card__index {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--accent-indigo);
+    background: rgba(99, 102, 241, 0.1);
+    padding: 3px 8px;
+    border-radius: var(--radius-full);
+}
+
+.q-card__header .q-card__title {
+    flex: 1;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1.5;
+}
+
+.q-card__header .q-card__toggle {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text-muted);
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: #ffffff;
+    border: 1px solid var(--border);
+}
+
+.q-card__body {
+    padding: 20px 22px 24px;
+    background: #ffffff;
+    border-top: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.q-card__section {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.q-card__section .q-tag {
+    align-self: flex-start;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    padding: 3px 10px;
+    border-radius: var(--radius-full);
+}
+
+.q-card__section .q-tag--intention {
+    background: rgba(99, 102, 241, 0.1);
+    color: var(--accent-indigo);
+}
+
+.q-card__section .q-tag--answer {
+    background: var(--success-soft);
+    color: var(--success);
+}
+
+.q-card__section .q-text {
+    font-size: 13px;
+    line-height: 1.65;
+    color: var(--text-secondary);
+}
+
+.q-card:hover {
+    border-color: rgba(99, 102, 241, 0.4);
+}
+
+.q-card--open {
+    box-shadow: var(--shadow-card);
+}
+
+/* ROADMAP STYLING */
+.roadmap-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.roadmap-day-card {
+    background: var(--bg-subtle);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-large);
+    padding: 22px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.roadmap-day-card__header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.roadmap-day-card__header .day-badge {
+    font-size: 12px;
+    font-weight: 700;
+    background: var(--primary);
+    color: #ffffff;
+    padding: 3px 10px;
+    border-radius: var(--radius-full);
+}
+
+.roadmap-day-card__header h3 {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text);
+    letter-spacing: -0.02em;
+}
+
+.roadmap-day-card .task-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.roadmap-day-card .task-list .task-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.5;
+}
+
+.roadmap-day-card .task-list .task-item .task-check {
+    color: var(--success);
+    font-weight: 700;
+}
+
+/* 3. RIGHT SIDEBAR */
+.interview-sidebar {
+    padding: 28px 24px;
+    background: var(--bg-subtle);
+    border-left: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.interview-sidebar .sidebar-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    color: var(--text-muted);
+    display: block;
+    margin-bottom: 12px;
+}
+
+.score-card {
+    background: #ffffff;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-large);
+    padding: 20px;
+    text-align: center;
+    box-shadow: var(--shadow-sm);
+}
+
+.score-card .score-display {
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 4px;
+    margin-bottom: 8px;
+}
+
+.score-card .score-display strong {
+    font-size: 48px;
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    line-height: 1;
+}
+
+.score-card .score-display span {
+    font-size: 14px;
+    color: var(--text-muted);
+    font-weight: 600;
+}
+
+.score-card .score-display.score-high strong {
+    color: var(--success);
+}
+
+.score-card .score-display.score-medium strong {
+    color: var(--warning);
+}
+
+.score-card .score-display.score-low strong {
+    color: var(--danger);
+}
+
+.score-card .score-description {
+    font-size: 12px;
+    color: var(--text-secondary);
+    line-height: 1.5;
+}
+
+.sidebar-divider {
+    height: 1px;
+    background: var(--border);
+}
+
+.gaps-card .skill-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.gaps-card .skill-list .skill-box {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 14px;
+    border-radius: 8px;
+    border: 1px solid;
+    transition: all 0.2s ease;
+}
+
+.gaps-card .skill-list .skill-box .skill-name {
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.gaps-card .skill-list .skill-box .skill-severity-label {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 2px 6px;
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.7);
+}
+
+.gaps-card .skill-list .skill-box.skill-high,
+.gaps-card .skill-list .skill-box.skill-critical {
+    background: var(--danger-soft);
+    color: var(--danger);
+    border-color: rgba(239, 68, 68, 0.25);
+}
+
+.gaps-card .skill-list .skill-box.skill-high .skill-severity-label,
+.gaps-card .skill-list .skill-box.skill-critical .skill-severity-label {
+    color: var(--danger);
+}
+
+.gaps-card .skill-list .skill-box.skill-medium,
+.gaps-card .skill-list .skill-box.skill-moderate {
+    background: var(--warning-soft);
+    color: var(--warning);
+    border-color: rgba(245, 158, 11, 0.25);
+}
+
+.gaps-card .skill-list .skill-box.skill-medium .skill-severity-label,
+.gaps-card .skill-list .skill-box.skill-moderate .skill-severity-label {
+    color: var(--warning);
+}
+
+.gaps-card .skill-list .skill-box.skill-low,
+.gaps-card .skill-list .skill-box.skill-minor {
+    background: var(--success-soft);
+    color: var(--success);
+    border-color: rgba(16, 185, 129, 0.25);
+}
+
+.gaps-card .skill-list .skill-box.skill-low .skill-severity-label,
+.gaps-card .skill-list .skill-box.skill-minor .skill-severity-label {
+    color: var(--success);
+}
+
+.gaps-card .skill-list .skill-box:hover {
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-sm);
+}
+
+.gaps-card .skill-list .no-gaps-text {
+    font-size: 12px;
+    color: var(--text-muted);
+}
+
+/* RESPONSIVE */
+@media (max-width: 1024px) {
+    .interview-layout {
+        grid-template-columns: 200px 1fr;
+    }
+
+    .interview-sidebar {
+        display: none;
+    }
+}
+
+@media (max-width: 768px) {
+    .interview-page {
+        padding: 8px;
+    }
+
+    .interview-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .interview-nav {
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+        flex-direction: row;
+        overflow-x: auto;
+        padding: 12px 16px;
+    }
+
+    .interview-nav .nav-group-title,
+    .interview-nav .nav-bottom-action {
+        display: none;
+    }
+
+    .interview-nav .nav-group {
+        flex-direction: row;
+    }
+
+    .interview-content {
+        padding: 20px 16px;
+    }
+}
