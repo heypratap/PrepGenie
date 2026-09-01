@@ -3,26 +3,9 @@ const bcrypt = require("bcryptjs")
 const jwt = require("jsonwebtoken")
 const tokenBlacklistModel = require("../models/blacklist.model")
 
-
-const isProduction =
-    process.env.NODE_ENV === "production"
-
-
-const cookieOptions = {
-    httpOnly: true,
-    secure: isProduction,
-    sameSite: isProduction ? "none" : "lax",
-    maxAge: 24 * 60 * 60 * 1000
-}
-
-
 async function registerUserController(req, res) {
     try {
-        const {
-            username,
-            email,
-            password
-        } = req.body
+        const { username, email, password } = req.body
 
         if (!email || !password) {
             return res.status(400).json({
@@ -30,71 +13,50 @@ async function registerUserController(req, res) {
             })
         }
 
-        const finalUsername =
-            (
-                username ||
-                email.split("@")[0] ||
-                ""
-            ).trim()
+        const finalUsername = (username || email.split("@")[0] || "").trim()
 
-        const normalizedEmail =
-            email.toLowerCase()
-
-        const existingUser =
-            await userModel.findOne({
-                $or: [
-                    {
-                        username: finalUsername
-                    },
-                    {
-                        email: normalizedEmail
-                    }
-                ]
-            })
+        const existingUser = await userModel.findOne({
+            $or: [
+                { username: finalUsername },
+                { email: email.toLowerCase() }
+            ]
+        })
 
         if (existingUser) {
             return res.status(400).json({
-                message:
-                    "Username or email already exists"
+                message: "Username or email already exists"
             })
         }
 
-        const hash =
-            await bcrypt.hash(
-                password,
-                10
-            )
+        const hash = await bcrypt.hash(password, 10)
 
-        const user =
-            await userModel.create({
-                username: finalUsername,
-                email: normalizedEmail,
-                password: hash,
-                usernameUpdates: []
-            })
+        const user = await userModel.create({
+            username: finalUsername,
+            email: email.toLowerCase(),
+            password: hash,
+            usernameUpdates: []
+        })
 
-        const token =
-            jwt.sign(
-                {
-                    id: user._id,
-                    username: user.username
-                },
-                process.env.JWT_SECRET,
-                {
-                    expiresIn: "1d"
-                }
-            )
-
-        res.cookie(
-            "token",
-            token,
-            cookieOptions
+        const token = jwt.sign(
+            {
+                id: user._id,
+                username: user.username
+            },
+            process.env.JWT_SECRET,
+            {
+                expiresIn: "1d"
+            }
         )
 
-        res.status(201).json({
-            message:
-                "User registered successfully",
+        res.cookie("token", token, {
+            httpOnly: true,
+            secure: true,
+            sameSite: "none",
+            maxAge: 24 * 60 * 60 * 1000
+        })
 
+        res.status(201).json({
+            message: "User registered successfully",
             user: {
                 id: user._id,
                 username: user.username,
@@ -103,157 +65,109 @@ async function registerUserController(req, res) {
                 remainingUpdates: 2
             }
         })
-
     } catch (error) {
-        console.error(
-            "Register error:",
-            error
-        )
+        console.log(error)
 
         res.status(500).json({
-            message:
-                "Something went wrong"
+            message: "Something went wrong"
         })
     }
 }
 
-
 async function loginUserController(req, res) {
     try {
-        const {
-            email,
-            username,
-            identifier,
-            password
-        } = req.body
+        const { email, username, identifier, password } = req.body
 
-        const userIdentifier =
-            (
-                identifier ||
-                email ||
-                username ||
-                ""
-            ).trim()
+        const userIdentifier = (
+            identifier ||
+            email ||
+            username ||
+            ""
+        ).trim()
 
-        if (
-            !userIdentifier ||
-            !password
-        ) {
+        if (!userIdentifier || !password) {
             return res.status(400).json({
-                message:
-                    "Username or Email and password are required"
+                message: "Username or Email and password are required"
             })
         }
 
-        const user =
-            await userModel.findOne({
-                $or: [
-                    {
-                        email:
-                            userIdentifier.toLowerCase()
-                    },
-                    {
-                        username:
-                            userIdentifier
-                    }
-                ]
-            })
+        const user = await userModel.findOne({
+            $or: [
+                { email: userIdentifier.toLowerCase() },
+                { username: userIdentifier }
+            ]
+        })
 
         if (!user) {
             return res.status(400).json({
-                message:
-                    "Invalid username/email or password"
+                message: "Invalid username/email or password"
             })
         }
 
-        const passwordValid =
-            await bcrypt.compare(
-                password,
-                user.password
-            )
+        const passwordValid = await bcrypt.compare(
+            password,
+            user.password
+        )
 
         if (!passwordValid) {
             return res.status(400).json({
-                message:
-                    "Invalid username/email or password"
+                message: "Invalid username/email or password"
             })
         }
 
-        const token =
-            jwt.sign(
-                {
-                    id: user._id,
-                    username: user.username
-                },
-                process.env.JWT_SECRET,
-                {
-                    expiresIn: "1d"
-                }
-            )
-
-        res.cookie(
-            "token",
-            token,
-            cookieOptions
+        const token = jwt.sign(
+            {
+                id: user._id,
+                username: user.username
+            },
+            process.env.JWT_SECRET,
+            {
+                expiresIn: "1d"
+            }
         )
 
-        const thirtyDaysAgo =
-            new Date(
-                Date.now() -
-                30 *
-                24 *
-                60 *
-                60 *
-                1000
-            )
+        res.cookie("token", token, {
+            httpOnly: true,
+            secure: true,
+            sameSite: "none",
+            maxAge: 24 * 60 * 60 * 1000
+        })
 
-        const recentUpdates =
-            (
-                user.usernameUpdates ||
-                []
-            ).filter(
-                (date) =>
-                    new Date(date) >
-                    thirtyDaysAgo
-            )
+        const thirtyDaysAgo = new Date(
+            Date.now() - 30 * 24 * 60 * 60 * 1000
+        )
+
+        const recentUpdates = (
+            user.usernameUpdates || []
+        ).filter(
+            (date) => new Date(date) > thirtyDaysAgo
+        )
 
         res.status(200).json({
-            message:
-                "Logged in successfully",
-
+            message: "Logged in successfully",
             user: {
                 id: user._id,
                 username: user.username,
                 email: user.email,
-                usernameUpdatesCount:
-                    recentUpdates.length,
-                remainingUpdates:
-                    Math.max(
-                        0,
-                        2 -
-                        recentUpdates.length
-                    )
+                usernameUpdatesCount: recentUpdates.length,
+                remainingUpdates: Math.max(
+                    0,
+                    2 - recentUpdates.length
+                )
             }
         })
-
     } catch (error) {
-        console.error(
-            "Login error:",
-            error
-        )
+        console.log(error)
 
         res.status(500).json({
-            message:
-                "Something went wrong"
+            message: "Something went wrong"
         })
     }
 }
 
-
 async function logoutUserController(req, res) {
     try {
-        const token =
-            req.cookies.token
+        const token = req.cookies.token
 
         if (token) {
             await tokenBlacklistModel.create({
@@ -261,114 +175,76 @@ async function logoutUserController(req, res) {
             })
         }
 
-        res.clearCookie(
-            "token",
-            {
-                httpOnly: true,
-                secure: isProduction,
-                sameSite:
-                    isProduction
-                        ? "none"
-                        : "lax"
-            }
-        )
-
-        res.status(200).json({
-            message:
-                "Logged out successfully"
+        res.clearCookie("token", {
+            httpOnly: true,
+            secure: true,
+            sameSite: "none"
         })
 
+        res.status(200).json({
+            message: "Logged out successfully"
+        })
     } catch (error) {
-        console.error(
-            "Logout error:",
-            error
-        )
+        console.log(error)
 
         res.status(500).json({
-            message:
-                "Something went wrong"
+            message: "Something went wrong"
         })
     }
 }
 
-
 async function getMeController(req, res) {
     try {
-        const user =
-            await userModel.findById(
-                req.user.id
-            )
+        const user = await userModel.findById(req.user.id)
 
         if (!user) {
             return res.status(404).json({
-                message:
-                    "User not found"
+                message: "User not found"
             })
         }
 
-        const thirtyDaysAgo =
-            new Date(
-                Date.now() -
-                30 *
-                24 *
-                60 *
-                60 *
-                1000
-            )
+        const thirtyDaysAgo = new Date(
+            Date.now() - 30 * 24 * 60 * 60 * 1000
+        )
 
-        const recentUpdates =
-            (
-                user.usernameUpdates ||
-                []
-            ).filter(
-                (date) =>
-                    new Date(date) >
-                    thirtyDaysAgo
-            )
+        const recentUpdates = (
+            user.usernameUpdates || []
+        ).filter(
+            (date) => new Date(date) > thirtyDaysAgo
+        )
 
         res.status(200).json({
             user: {
                 id: user._id,
                 username: user.username,
                 email: user.email,
-                usernameUpdatesCount:
-                    recentUpdates.length,
-                remainingUpdates:
-                    Math.max(
-                        0,
-                        2 -
-                        recentUpdates.length
-                    )
+                usernameUpdatesCount: recentUpdates.length,
+                remainingUpdates: Math.max(
+                    0,
+                    2 - recentUpdates.length
+                )
             }
         })
-
     } catch (error) {
-        console.error(
-            "Get user error:",
-            error
-        )
+        console.log(error)
 
         res.status(500).json({
-            message:
-                "Something went wrong"
+            message: "Something went wrong"
         })
     }
 }
 
-
 async function updateUsernameController(req, res) {
     try {
-        const {
-            username
-        } = req.body
+        const { username } = req.body
 
-        const newUsername =
-            (username || "").trim()
+        const newUsername = (
+            username || ""
+        ).trim()
 
         if (!newUsername) {
             return res.status(400).json({
-                message:
-                    "Please enter a valid username"
+                message: "Please enter a valid username"
             })
         }
 
@@ -377,20 +253,15 @@ async function updateUsernameController(req, res) {
             newUsername.length > 30
         ) {
             return res.status(400).json({
-                message:
-                    "Username must be between 3 and 30 characters"
+                message: "Username must be between 3 and 30 characters"
             })
         }
 
-        const user =
-            await userModel.findById(
-                req.user.id
-            )
+        const user = await userModel.findById(req.user.id)
 
         if (!user) {
             return res.status(404).json({
-                message:
-                    "User not found"
+                message: "User not found"
             })
         }
 
@@ -399,131 +270,88 @@ async function updateUsernameController(req, res) {
             newUsername.toLowerCase()
         ) {
             return res.status(400).json({
-                message:
-                    "New username must be different from current username"
+                message: "New username must be different from current username"
             })
         }
 
-        const thirtyDaysAgo =
-            new Date(
-                Date.now() -
-                30 *
-                24 *
-                60 *
-                60 *
-                1000
-            )
+        const thirtyDaysAgo = new Date(
+            Date.now() - 30 * 24 * 60 * 60 * 1000
+        )
 
-        const recentUpdates =
-            (
-                user.usernameUpdates ||
-                []
-            ).filter(
-                (date) =>
-                    new Date(date) >
-                    thirtyDaysAgo
-            )
+        const recentUpdates = (
+            user.usernameUpdates || []
+        ).filter(
+            (date) => new Date(date) > thirtyDaysAgo
+        )
 
         if (recentUpdates.length >= 2) {
-            const oldestRecent =
-                new Date(
-                    recentUpdates[0]
-                )
+            const oldestRecent = new Date(
+                recentUpdates[0]
+            )
 
-            const nextAvailable =
-                new Date(
-                    oldestRecent.getTime() +
-                    30 *
-                    24 *
-                    60 *
-                    60 *
-                    1000
-                )
+            const nextAvailable = new Date(
+                oldestRecent.getTime() +
+                30 * 24 * 60 * 60 * 1000
+            )
 
             return res.status(400).json({
-                message:
-                    `You can only change your username twice in a month. Next change available on ${nextAvailable.toLocaleDateString(
-                        undefined,
-                        {
-                            month: "short",
-                            day: "numeric",
-                            year: "numeric"
-                        }
-                    )}.`
+                message: `You can only change your username twice in a month. Next change available on ${nextAvailable.toLocaleDateString(
+                    undefined,
+                    {
+                        month: "short",
+                        day: "numeric",
+                        year: "numeric"
+                    }
+                )}.`
             })
         }
 
-        const existingUser =
-            await userModel.findOne({
-                username: newUsername,
-                _id: {
-                    $ne: user._id
-                }
-            })
+        const existingUser = await userModel.findOne({
+            username: newUsername,
+            _id: { $ne: user._id }
+        })
 
         if (existingUser) {
             return res.status(400).json({
-                message:
-                    "This username is already taken. Please choose another."
+                message: "This username is already taken. Please choose another."
             })
         }
 
-        user.username =
-            newUsername
+        user.username = newUsername
 
-        if (
-            !Array.isArray(
-                user.usernameUpdates
-            )
-        ) {
+        if (!Array.isArray(user.usernameUpdates)) {
             user.usernameUpdates = []
         }
 
-        user.usernameUpdates.push(
-            new Date()
-        )
+        user.usernameUpdates.push(new Date())
 
         await user.save()
 
-        const updatedRecent =
-            user.usernameUpdates.filter(
-                (date) =>
-                    new Date(date) >
-                    thirtyDaysAgo
-            )
+        const updatedRecent = user.usernameUpdates.filter(
+            (date) => new Date(date) > thirtyDaysAgo
+        )
 
         res.status(200).json({
-            message:
-                "Username updated successfully!",
-
+            message: "Username updated successfully!",
             user: {
                 id: user._id,
                 username: user.username,
                 email: user.email,
-                usernameUpdatesCount:
-                    updatedRecent.length,
-                remainingUpdates:
-                    Math.max(
-                        0,
-                        2 -
-                        updatedRecent.length
-                    )
+                usernameUpdatesCount: updatedRecent.length,
+                remainingUpdates: Math.max(
+                    0,
+                    2 - updatedRecent.length
+                )
             }
         })
-
     } catch (error) {
-        console.error(
-            "Username update error:",
-            error
-        )
+        console.error(error)
 
         res.status(500).json({
-            message:
-                "Something went wrong while updating username"
+            message: "Something went wrong while updating username"
         })
     }
 }
-
 
 module.exports = {
     registerUserController,
