@@ -9,7 +9,7 @@ const app = express()
 
 const allowedOrigins = [
     "http://localhost:5173",
-    "https://prep-genie-bpqouz9cf-heypratap.vercel.app"
+    "https://prep-genie-tau.vercel.app"
 ]
 
 app.use(
@@ -36,7 +36,7 @@ app.use(cookieParser())
 
 app.get("/", (req, res) => {
     res.json({
-        message: "PrepGenie API is running"
+        message: "PrepGenie is running"
     })
 })
 
