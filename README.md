@@ -423,5 +423,4 @@ processing, and API integration.
 
 # License
 
-This project is currently intended for educational and portfolio
-purposes.
+This project is open source and creae for portfolio purpose.
