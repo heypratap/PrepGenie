@@ -12,7 +12,7 @@ app.use(
     cors({
         origin: [
             "http://localhost:5173",
-            "https://prepgenie-82u2rdk0z-heypratap.vercel.app/login"
+            "https://prepgenie-82u2rdk0z-heypratap.vercel.app"
         ],
         credentials: true
     })
