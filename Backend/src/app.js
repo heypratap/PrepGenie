@@ -7,9 +7,26 @@ const interviewRouter = require("./routes/interview.routes")
 
 const app = express()
 
+const allowedOrigins = [
+    "http://localhost:5173",
+    "https://prep-genie-bpqouz9cf-heypratap.vercel.app"
+]
+
 app.use(
     cors({
-        origin: "https://prep-genie-bpqouz9cf-heypratap.vercel.app",
+        origin: function (origin, callback) {
+            if (!origin) {
+                return callback(null, true)
+            }
+
+            if (allowedOrigins.includes(origin)) {
+                return callback(null, true)
+            }
+
+            console.log("CORS blocked:", origin)
+
+            return callback(null, false)
+        },
         credentials: true
     })
 )
