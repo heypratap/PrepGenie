@@ -10,14 +10,15 @@ const app = express()
 
 const allowedOrigins = [
     "http://localhost:5173",
-    process.env.FRONTEND_URL
-].filter(Boolean)
+    "https://prepgenie-pi.vercel.app"
+]
 
 
 app.use(
     cors({
         origin: function (origin, callback) {
 
+            // Allow requests such as Postman/server requests
             if (!origin) {
                 return callback(null, true)
             }
@@ -26,10 +27,13 @@ app.use(
                 return callback(null, true)
             }
 
+            console.log(
+                "Blocked CORS origin:",
+                origin
+            )
+
             return callback(
-                new Error(
-                    `CORS blocked origin: ${origin}`
-                )
+                new Error("Not allowed by CORS")
             )
         },
 
@@ -39,6 +43,7 @@ app.use(
 
 
 app.use(express.json())
+
 app.use(cookieParser())
 
 
@@ -57,8 +62,16 @@ app.get("/health", (req, res) => {
 })
 
 
-app.use("/api/auth", authRouter)
-app.use("/api/interview", interviewRouter)
+app.use(
+    "/api/auth",
+    authRouter
+)
+
+
+app.use(
+    "/api/interview",
+    interviewRouter
+)
 
 
 module.exports = app
